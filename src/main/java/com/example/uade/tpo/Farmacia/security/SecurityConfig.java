@@ -104,11 +104,13 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Orígenes permitidos
+        // Orígenes permitidos - desarrollo y producción
         configuration.setAllowedOrigins(List.of(
             "http://localhost:5173",
             "http://localhost:8080",
-            "http://localhost:8081"
+            "http://localhost:8081",
+            "https://front-farmacia-22o6apawc-benjacostm100-gmailcoms-projects.vercel.app",
+            "https://front-farmacia.vercel.app"
         ));
         
         // Métodos HTTP permitidos
@@ -116,16 +118,17 @@ public class SecurityConfig {
             "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
         ));
         
-        // Headers permitidos
-        configuration.setAllowedHeaders(List.of(
-            "Authorization", "Content-Type", "Accept"
-        ));
+        // Headers permitidos - permitir todos los headers
+        configuration.setAllowedHeaders(List.of("*"));
         
         // Headers expuestos en la respuesta
-        configuration.setExposedHeaders(List.of("Authorization"));
+        configuration.setExposedHeaders(List.of("Authorization", "Content-Type"));
         
         // Permitir credenciales (cookies, auth headers)
         configuration.setAllowCredentials(true);
+        
+        // Tiempo de cache para preflight requests (1 hora)
+        configuration.setMaxAge(3600L);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
